@@ -12,10 +12,10 @@ $IPT -t nat -X
 $IPT -t mangle -F
 $IPT -t mangle -X
 
-# set all 3 chains to ACCEPT
-$IPT -P INPUT ACCEPT
+# set default policies
+$IPT -P INPUT DROP
 $IPT -P OUTPUT ACCEPT
-$IPT -P FORWARD ACCEPT
+$IPT -P FORWARD DROP 
 
 $IPT -A INPUT -i lo -j ACCEPT
 $IPT -A OUTPUT -o lo -j ACCEPT
