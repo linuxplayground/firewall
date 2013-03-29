@@ -15,3 +15,5 @@ This script does the following things:
 * Drop all other input traffic.  (Possibly redundant based on policy defined at the beginning)
 * Ensure that the dnsmasq service is running so that vboxnet0 hosts will be able to get an ip address.
 * Ensure that ip\_forwarding\_ is turned on.
+
+The config file for dnsmasq is also included.
