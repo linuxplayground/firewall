@@ -1,0 +1,18 @@
+##
+## dnsmasq configuration file for Oracle Virtualbox host only network
+## Use this instead of built-in nat networks if you require access to
+## your virtual machines from the host and or between guests.
+##
+## save the file in /etc/dnsmasq.d/virtualbox and
+## ensure that /etc/dnsmasq.conf has the following line UNCOMMENTED
+## conf-dir=/etc/dnsmasq.d
+##
+
+## The interface to use
+interface=vboxnet0
+## The DHCP Range
+dhcp-range=192.168.56.101,192.168.56.254
+## Tell dnsmasq to apply the fqdn to the hosts in leases
+expand-hosts
+## Specify the domain
+domain=vbox.local
