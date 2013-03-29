@@ -2,7 +2,7 @@
 IPT=/usr/sbin/iptables
 
 # Stop the system firewall
-systemctl stop SuSEfirewall.service
+systemctl stop SuSEfirewall2.service
 
 # Reset all
 $IPT -F
