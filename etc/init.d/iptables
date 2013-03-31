@@ -45,8 +45,8 @@ case $action in
 	"restart")
 		echo "Restarting iptables ..."
                 $IPTrestore < $IPTConfigOpen
-                $IP6restore < $IPTConfigOpen
-                #$IPTrestore < $IPTConfigSave
+                #$IP6restore < $IPTConfigOpen
+                $IPTrestore < $IPTConfigSave
                 #$IP6restore < $IPTConfigSave
 		;;
 	"status")
