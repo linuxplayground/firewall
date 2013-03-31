@@ -1,0 +1,62 @@
+#!/bin/bash
+IPT=/usr/sbin/iptables
+IPTsave=/usr/sbin/iptables-save
+IPTrestore=/usr/sbin/iptables-restore
+
+IP6T=/usr/sbin/ip6tables
+IP6Tsave=/usr/sbin/ip6tables-save
+IP6Trestore=/usr/sbin/ip6tables-restore
+
+IPTConfigSave=/etc/sysconfig/iptables.save
+IPTConfigOpen=/etc/sysconfig/iptables.open
+
+action=$1; shift
+
+usage() {
+cat <<EOT
+usage: $0 <start|stop|status>
+	start: Load the iptables configuration in /etc/sysconfig/iptables.save
+	stop:  Load the iptables configuration in /etc/sysconfig/iptables.open
+		** NOTE ** Stopping iptables actually creates a completely open firewall
+	status: Display the current iptables rules.
+	restart: open the firewall and close it again with iptables.open and iptables.save
+EOT
+}
+
+if [ -z $action ]; then
+	usage
+	exit 1
+fi
+
+# Stop the system firewall Always
+systemctl stop SuSEfirewall2.service
+
+case $action in
+	"start")
+		echo "Starting iptables ...."
+		$IPTrestore < $IPTConfigSave
+		#$IP6restore < $IPTConfigSave
+		;;
+	"stop")
+		echo "Stopping iptables ..."
+		$IPTrestore < $IPTConfigOpen
+		#$IP6restore < $IPTConfigOpen
+		;;
+	"restart")
+		echo "Restarting iptables ..."
+                $IPTrestore < $IPTConfigOpen
+                $IP6restore < $IPTConfigOpen
+                #$IPTrestore < $IPTConfigSave
+                #$IP6restore < $IPTConfigSave
+		;;
+	"status")
+		$IPTsave
+		;;
+esac
+
+# turn on ip_forward
+sysctl net.ipv4.ip_forward=1
+
+# turn on dnsmasq
+systemctl start dnsmasq
+

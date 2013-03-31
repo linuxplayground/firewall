@@ -1,0 +1,27 @@
+#!/bin/bash
+IPT=/usr/sbin/iptables
+IPTsave=/usr/sbin/iptables-save
+IPTrestore=/usr/sbin/iptables-restore
+
+IP6T=/usr/sbin/ip6tables
+IP6Tsave=/usr/sbin/ip6tables-save
+IP6Trestore=/usr/sbin/ip6tables-restore
+
+# Reset all
+$IPT -F
+$IPT -X
+$IPT -t nat -F
+$IPT -t nat -X
+$IPT -t mangle -F
+$IPT -t mangle -X
+
+# set default policies
+$IPT -P INPUT ACCEPT
+$IPT -P OUTPUT ACCEPT
+$IPT -P FORWARD ACCEPT 
+
+$IPT -t mangle -P INPUT ACCEPT
+$IPT -t mangle -P OUTPUT ACCEPT
+$IPT -t mangle -P FORWARD ACCEPT
+$IPT -t mangle -P PREROUTING ACCEPT
+$IPT -t mangle -P PREROUTING ACCEPT
