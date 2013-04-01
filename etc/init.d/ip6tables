@@ -3,33 +3,33 @@
 # License: GPL v.2
 #
 ### BEGIN INIT INFO
-# Provides:		iptables
+# Provides:		ip6tables
 # Default-Start:	3 4 5
 # Default-Stop:		0 1 2 6
-# Short-Description:	Traditional Itables Implimentation (IPv4)
+# Short-Description:	Traditional ip6tables Implimentation (IPv6)
 # Long-Description:	Replacement for SuSEFirewall2 daemon that provides
-#	for the traditional configuration of iptables (IPv4) via
-#	/etc/sysconfig/iptables
+#	for the traditional configuration of ip6tables (IPv6) via
+#	/etc/sysconfig/ip6tables
 ### END INIT INFO
 
 
-IPT=/usr/sbin/iptables
-IPTsave=/usr/sbin/iptables-save
-IPTrestore=/usr/sbin/iptables-restore
+IPT=/usr/sbin/ip6tables
+IPTsave=/usr/sbin/ip6tables-save
+IPTrestore=/usr/sbin/ip6tables-restore
 
-IPTConfigSave=/etc/sysconfig/iptables.save
-IPTConfigOpen=/etc/sysconfig/iptables.open
+IPTConfigSave=/etc/sysconfig/ip6tables.save
+IPTConfigOpen=/etc/sysconfig/ip6tables.open
 
 action=$1; shift
 
 usage() {
 cat <<EOT
 usage: $0 <start|stop|status>
-	start: Load the iptables configuration in /etc/sysconfig/iptables.save
-	stop:  Load the iptables configuration in /etc/sysconfig/iptables.open
-		** NOTE ** Stopping iptables actually creates a completely open firewall
-	status: Display the current iptables rules.
-	restart: open the firewall and close it again with iptables.open and iptables.save
+	start: Load the ip6tables configuration in /etc/sysconfig/ip6tables.save
+	stop:  Load the ip6tables configuration in /etc/sysconfig/ip6tables.open
+		** NOTE ** Stopping ip6tables actually creates a completely open firewall
+	status: Display the current ip6tables rules.
+	restart: open the firewall and close it again with ip6tables.open and ip6tables.save
 EOT
 }
 
@@ -55,15 +55,15 @@ case $action in
 		echo -n "Stopping SuSEfirewall2..."
 		rc_status -v
 		systemctl stop SuSEfirewall2
-		echo -n "Starting iptables..."
+		echo -n "Starting ip6tables..."
 		$IPTrestore < $IPTConfigSave
 		rc_status -v
-		echo -n "enabling ipv4.ip_forward"
-		sysctl net.ipv4.ip_forward=1
+		echo -n "enabling ipv6.ip_forward"
+		sysctl net.ipv6.conf.all.forwarding=1
 		rc_status -v
 		;;
 	"stop")
-		echo -n "Stopping iptables ..."
+		echo -n "Stopping ip6tables ..."
 		$IPTrestore < $IPTConfigOpen
 		rc_status -v
 		;;
@@ -72,7 +72,7 @@ case $action in
 		$0 start
 		;;
 	"status")
-		echo -n "Checking for iptables..."
+		echo -n "Checking for ip6tables..."
 		$IPTsave
 		rc_status -v
 		;;
