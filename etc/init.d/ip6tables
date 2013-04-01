@@ -58,9 +58,6 @@ case $action in
 		echo -n "Starting ip6tables..."
 		$IPTrestore < $IPTConfigSave
 		rc_status -v
-		echo -n "enabling ipv6.ip_forward"
-		sysctl net.ipv6.conf.all.forwarding=1
-		rc_status -v
 		;;
 	"stop")
 		echo -n "Stopping ip6tables ..."
